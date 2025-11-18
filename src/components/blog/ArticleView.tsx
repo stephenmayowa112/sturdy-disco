@@ -6,6 +6,9 @@ import { LoadingSpinner } from '../common/LoadingSpinner';
 import { AudioReader } from './AudioReader';
 import { CommentSection } from './CommentSection';
 import { ArrowLeft, Calendar } from 'lucide-react';
+import { sanitizeArticleContent } from '../../utils/sanitize';
+import { SEOMetaTags } from '../common/SEOMetaTags';
+import { getArticleSEOData } from '../../utils/seo';
 
 export function ArticleView() {
   const { id } = useParams<{ id: string }>();
@@ -80,6 +83,9 @@ export function ArticleView() {
 
   return (
     <article className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-12">
+      {/* SEO Meta Tags */}
+      <SEOMetaTags {...getArticleSEOData(article)} />
+      
       {/* Back to Home Link */}
       <Link
         to="/"
@@ -112,7 +118,7 @@ export function ArticleView() {
       {/* Article Content */}
       <div 
         className="prose prose-lg md:prose-xl dark:prose-invert max-w-none mb-12 prose-headings:font-bold prose-a:text-blue-600 dark:prose-a:text-blue-400 prose-a:no-underline hover:prose-a:underline prose-img:rounded-lg prose-pre:bg-gray-100 dark:prose-pre:bg-gray-800"
-        dangerouslySetInnerHTML={{ __html: article.content }}
+        dangerouslySetInnerHTML={{ __html: sanitizeArticleContent(article.content) }}
       />
 
       {/* Embedded Media */}
